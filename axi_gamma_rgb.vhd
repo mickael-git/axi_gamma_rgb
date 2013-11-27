@@ -65,11 +65,13 @@ signal Rg    : std_logic_vector(DATA_WIDTH_OUT-1 downto 0);
 signal Gg    : std_logic_vector(DATA_WIDTH_OUT-1 downto 0);
 signal Bg    : std_logic_vector(DATA_WIDTH_OUT-1 downto 0);
 
+signal R_out_i  : std_logic_vector(DATA_WIDTH_OUT-1 downto 0);
+signal G_out_i  : std_logic_vector(DATA_WIDTH_OUT-1 downto 0);
+signal B_out_i  : std_logic_vector(DATA_WIDTH_OUT-1 downto 0);
+
 signal valid_delay : std_logic_vector( 1 downto 0);
 
 begin
-
-clk_out <= clk_in;
 
 gamma0 : axi_3_lut
   generic map (
@@ -103,9 +105,9 @@ gamma0 : axi_3_lut
   process(clk_in)
   begin
     if rising_edge(clk_in) then
-      R_out <= Rg;
-      G_out <= Gg;
-      B_out <= Bg;
+      R_out_i <= Rg;
+      G_out_i <= Gg;
+      B_out_i <= Bg;
     end if;
   end process;
 
@@ -117,6 +119,10 @@ gamma0 : axi_3_lut
     end if;
   end process;
 
+clk_out <= clk_in;
 valid_out <= valid_delay(valid_delay'high);
+R_out <= R_out_i;
+G_out <= G_out_i;
+B_out <= B_out_i;
 
 end rtl;
